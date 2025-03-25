@@ -10,7 +10,7 @@ import HealthKit
 import HealthDataSync
 import IomtFhirClient
 
-/// An implemtation of the HDSExternalStoreProtocol used to store high frequency HealthKit data into a FHIR Server.
+/// An implementation of the HDSExternalStoreProtocol used to store high frequency HealthKit data into a FHIR Server.
 open class IomtFhirExternalStore : HDSExternalStoreProtocol
 {
     public var delegate: IomtFhirExternalStoreDelegate?
@@ -29,7 +29,7 @@ open class IomtFhirExternalStore : HDSExternalStoreProtocol
     
     public func add(objects: [HDSExternalObjectProtocol], completion: @escaping (Error?) -> Void) {
         // Nothing to sync - complete and return.
-        guard objects.count > 0 else {
+        guard !objects.isEmpty else {
             completion(nil)
             return
         }
@@ -49,7 +49,7 @@ open class IomtFhirExternalStore : HDSExternalStoreProtocol
                     completion(error)
                 }
             } catch {
-                // Notify the delegate that the send operation has failed and call the completion passed into the add function..
+                // Notify the delegate that the send operation has failed and call the completion passed into the add function.
                 self.delegate?.addComplete(eventDatas: datas, success: false, error: error)
                 completion(error)
             }
@@ -78,7 +78,7 @@ open class IomtFhirExternalStore : HDSExternalStoreProtocol
                 let eventData = try message.generateEventData()
                 var mutableEventDatas = eventDatas
                 
-                guard delegate != nil else {
+                guard let delegate = self.delegate else {
                     // No delegate - Just add the EventData to the payload and continue recursion.
                     mutableEventDatas.append(eventData)
                     self.createEventDatas(objects: objects, eventDatas: mutableEventDatas, index: index + 1, completion: completion)
@@ -86,7 +86,7 @@ open class IomtFhirExternalStore : HDSExternalStoreProtocol
                 }
                 
                 // Check the delegate if the pending add operation should be executed.
-                delegate?.shouldAdd(eventData: eventData, object: message.healthKitObject, completion: { (shouldAdd, error) in
+                delegate.shouldAdd(eventData: eventData, object: message.healthKitObject, completion: { (shouldAdd, error) in
                     guard shouldAdd else {
                         completion(eventDatas, error)
                         return
@@ -104,4 +104,4 @@ open class IomtFhirExternalStore : HDSExternalStoreProtocol
             self.createEventDatas(objects: objects, eventDatas: eventDatas, index: index + 1, completion: completion)
         }
     }
-}
+} 

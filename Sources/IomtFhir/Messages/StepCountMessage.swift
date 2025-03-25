@@ -20,7 +20,7 @@ open class StepCountMessage : IomtFhirMessageBase, HDSExternalObjectProtocol {
     public init?(object: HKObject)
     {
         guard let sample = object as? HKQuantitySample,
-            sample.quantityType == StepCountMessage.healthKitObjectType() else {
+            sample.quantityType == StepCountMessage.healthKitObjectType() as? HKQuantityType else {
                 return nil
         }
         
@@ -43,7 +43,7 @@ open class StepCountMessage : IomtFhirMessageBase, HDSExternalObjectProtocol {
     }
     
     public static func externalObject(object: HKObject, converter: HDSConverterProtocol?) -> HDSExternalObjectProtocol? {
-        return StepCountMessage.init(object: object)
+        return StepCountMessage(object: object)
     }
     
     public static func externalObject(deletedObject: HKDeletedObject, converter: HDSConverterProtocol?) -> HDSExternalObjectProtocol? {

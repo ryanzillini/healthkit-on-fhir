@@ -15,7 +15,7 @@ open class AppleExerciseTimeMessage : IomtFhirMessageBase, HDSExternalObjectProt
     
     public init?(object: HKObject) {
         guard let sample = object as? HKQuantitySample,
-            sample.quantityType == AppleExerciseTimeMessage.healthKitObjectType() else {
+            sample.quantityType == AppleExerciseTimeMessage.healthKitObjectType() as? HKQuantityType else {
                 return nil
         }
         
@@ -42,7 +42,7 @@ open class AppleExerciseTimeMessage : IomtFhirMessageBase, HDSExternalObjectProt
     }
     
     public static func externalObject(object: HKObject, converter: HDSConverterProtocol?) -> HDSExternalObjectProtocol? {
-        return AppleExerciseTimeMessage.init(object: object)
+        return AppleExerciseTimeMessage(object: object)
     }
     
     public static func externalObject(deletedObject: HKDeletedObject, converter: HDSConverterProtocol?) -> HDSExternalObjectProtocol? {

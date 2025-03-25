@@ -9,12 +9,12 @@ import Foundation
 import FHIR
 
 extension Identifier {
-    public func contains(system: String, value:String) -> Bool {
-        if let identifierSystem = self.system?.absoluteString,
-            let identifierValue = self.value?.description {
-            return identifierSystem == system && identifierValue == value
+    public func contains(system targetSystem: String, value targetValue: String) -> Bool {
+        guard let identifierSystem = self.system?.absoluteString,
+              let identifierValue = self.value?.description else {
+            return false
         }
         
-        return false
+        return identifierSystem == targetSystem && identifierValue == targetValue
     }
 }

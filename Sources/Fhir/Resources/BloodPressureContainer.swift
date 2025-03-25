@@ -43,7 +43,7 @@ open class BloodPressureContainer : ResourceContainer<Observation>, HDSExternalO
     public func update(with object: HKObject) {
         do {
             if let converter = self.converter {
-                let value: Observation = try converter.convert(object: healthKitObject!)
+                let value: Observation = try converter.convert(object: healthKitObject)
                 resource?.component = value.component
             }
         } catch {

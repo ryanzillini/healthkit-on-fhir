@@ -16,7 +16,7 @@ open class EnvironmentalAudioExposureMessage : IomtFhirMessageBase, HDSExternalO
     
     public init?(object: HKObject) {
         guard let sample = object as? HKQuantitySample,
-            sample.quantityType == EnvironmentalAudioExposureMessage.healthKitObjectType() else {
+            sample.quantityType == EnvironmentalAudioExposureMessage.healthKitObjectType() as? HKQuantityType else {
                 return nil
         }
         
@@ -43,7 +43,7 @@ open class EnvironmentalAudioExposureMessage : IomtFhirMessageBase, HDSExternalO
     }
     
     public static func externalObject(object: HKObject, converter: HDSConverterProtocol?) -> HDSExternalObjectProtocol? {
-        return EnvironmentalAudioExposureMessage.init(object: object)
+        return EnvironmentalAudioExposureMessage(object: object)
     }
     
     public static func externalObject(deletedObject: HKDeletedObject, converter: HDSConverterProtocol?) -> HDSExternalObjectProtocol? {

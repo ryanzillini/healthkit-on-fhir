@@ -15,7 +15,7 @@ open class ActiveEnergyBurnedMessage : IomtFhirMessageBase, HDSExternalObjectPro
     
     public init?(object: HKObject) {
         guard let sample = object as? HKQuantitySample,
-            sample.quantityType == ActiveEnergyBurnedMessage.healthKitObjectType() else {
+            sample.quantityType == ActiveEnergyBurnedMessage.healthKitObjectType() as? HKQuantityType else {
                 return nil
         }
         
@@ -42,7 +42,7 @@ open class ActiveEnergyBurnedMessage : IomtFhirMessageBase, HDSExternalObjectPro
     }
     
     public static func externalObject(object: HKObject, converter: HDSConverterProtocol?) -> HDSExternalObjectProtocol? {
-        return ActiveEnergyBurnedMessage.init(object: object)
+        return ActiveEnergyBurnedMessage(object: object)
     }
     
     public static func externalObject(deletedObject: HKDeletedObject, converter: HDSConverterProtocol?) -> HDSExternalObjectProtocol? {

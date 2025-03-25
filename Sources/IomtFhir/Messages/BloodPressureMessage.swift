@@ -46,7 +46,7 @@ open class BloodPressureMessage : IomtFhirMessageBase, HDSExternalObjectProtocol
     }
     
     public static func externalObject(object: HKObject, converter: HDSConverterProtocol?) -> HDSExternalObjectProtocol? {
-        return BloodPressureMessage.init(object: object)
+        return BloodPressureMessage(object: object)
     }
     
     public static func externalObject(deletedObject: HKDeletedObject, converter: HDSConverterProtocol?) -> HDSExternalObjectProtocol? {

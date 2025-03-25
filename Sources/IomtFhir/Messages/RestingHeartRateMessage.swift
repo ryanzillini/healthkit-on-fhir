@@ -16,7 +16,7 @@ open class RestingHeartRateMessage : IomtFhirMessageBase, HDSExternalObjectProto
     
     public init?(object: HKObject) {
         guard let sample = object as? HKQuantitySample,
-            sample.quantityType == RestingHeartRateMessage.healthKitObjectType() else {
+            sample.quantityType == RestingHeartRateMessage.healthKitObjectType() as? HKQuantityType else {
                 return nil
         }
         
@@ -43,7 +43,7 @@ open class RestingHeartRateMessage : IomtFhirMessageBase, HDSExternalObjectProto
     }
     
     public static func externalObject(object: HKObject, converter: HDSConverterProtocol?) -> HDSExternalObjectProtocol? {
-        return RestingHeartRateMessage.init(object: object)
+        return RestingHeartRateMessage(object: object)
     }
     
     public static func externalObject(deletedObject: HKDeletedObject, converter: HDSConverterProtocol?) -> HDSExternalObjectProtocol? {

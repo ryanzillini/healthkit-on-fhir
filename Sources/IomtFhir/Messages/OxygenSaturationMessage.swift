@@ -15,7 +15,7 @@ open class OxygenSaturationMessage : IomtFhirMessageBase, HDSExternalObjectProto
     
     public init?(object: HKObject) {
         guard let sample = object as? HKQuantitySample,
-            sample.quantityType == OxygenSaturationMessage.healthKitObjectType() else {
+            sample.quantityType == OxygenSaturationMessage.healthKitObjectType() as? HKQuantityType else {
                 return nil
         }
         
@@ -42,7 +42,7 @@ open class OxygenSaturationMessage : IomtFhirMessageBase, HDSExternalObjectProto
     }
     
     public static func externalObject(object: HKObject, converter: HDSConverterProtocol?) -> HDSExternalObjectProtocol? {
-        return OxygenSaturationMessage.init(object: object)
+        return OxygenSaturationMessage(object: object)
     }
     
     public static func externalObject(deletedObject: HKDeletedObject, converter: HDSConverterProtocol?) -> HDSExternalObjectProtocol? {

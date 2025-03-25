@@ -15,7 +15,7 @@ open class HeightMessage : IomtFhirMessageBase, HDSExternalObjectProtocol {
     
     public init?(object: HKObject) {
         guard let sample = object as? HKQuantitySample,
-            sample.quantityType == HeightMessage.healthKitObjectType() else {
+            sample.quantityType == HeightMessage.healthKitObjectType() as? HKQuantityType else {
                 return nil
         }
         
@@ -42,7 +42,7 @@ open class HeightMessage : IomtFhirMessageBase, HDSExternalObjectProtocol {
     }
     
     public static func externalObject(object: HKObject, converter: HDSConverterProtocol?) -> HDSExternalObjectProtocol? {
-        return HeightMessage.init(object: object)
+        return HeightMessage(object: object)
     }
     
     public static func externalObject(deletedObject: HKDeletedObject, converter: HDSConverterProtocol?) -> HDSExternalObjectProtocol? {

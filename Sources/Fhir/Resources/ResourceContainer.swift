@@ -38,19 +38,23 @@ open class ResourceContainer<T: Resource> : ResourceContainerProtocol {
     
     public func getResource() throws -> Resource {
         if resource == nil {
-            guard converter != nil else {
+            guard let converter = self.converter else {
                 throw ConverterError.requiredConverterNotProvided
             }
             
-            guard healthKitObject != nil else {
+            guard let healthKitObject = self.healthKitObject else {
                 throw ConverterError.noObjectToConvert
             }
             
-            let value: T = try converter!.convert(object: healthKitObject!)
+            let value: T = try converter.convert(object: healthKitObject)
             resource = value
         }
         
-        return resource!
+        guard let resource = self.resource else {
+            throw ConverterError.noObjectToConvert
+        }
+        
+        return resource
     }
     
     public func setResource(resource: Resource) {

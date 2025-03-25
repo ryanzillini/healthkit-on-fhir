@@ -15,7 +15,7 @@ open class BloodGlucoseMessage : IomtFhirMessageBase, HDSExternalObjectProtocol 
     
     public init?(object: HKObject) {
         guard let sample = object as? HKQuantitySample,
-            sample.quantityType == BloodGlucoseMessage.healthKitObjectType() else {
+            sample.quantityType == BloodGlucoseMessage.healthKitObjectType() as? HKQuantityType else {
                 return nil
         }
         
@@ -42,7 +42,7 @@ open class BloodGlucoseMessage : IomtFhirMessageBase, HDSExternalObjectProtocol 
     }
     
     public static func externalObject(object: HKObject, converter: HDSConverterProtocol?) -> HDSExternalObjectProtocol? {
-        return BloodGlucoseMessage.init(object: object)
+        return BloodGlucoseMessage(object: object)
     }
     
     public static func externalObject(deletedObject: HKDeletedObject, converter: HDSConverterProtocol?) -> HDSExternalObjectProtocol? {

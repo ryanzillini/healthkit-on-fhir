@@ -38,7 +38,11 @@ extension FHIRSearch {
         
         nextPage(server) { (nextBundle, error) in
             // Merge the results.
-            let mergedBundle = bundle != nil ? self.addEntries(from: nextBundle, to: bundle!) : nextBundle
+            let mergedBundle = if let currentBundle = bundle {
+                self.addEntries(from: nextBundle, to: currentBundle)
+            } else {
+                nextBundle
+            }
             
             guard error == nil else {
                 callback(nil, error)
@@ -54,15 +58,16 @@ extension FHIRSearch {
     }
     
     private func addEntries(from bundle: FHIR.Bundle?, to otherBundle: FHIR.Bundle) -> FHIR.Bundle {
-        // The from bundle is nil or has no entires - nothing to merge.
+        // The from bundle is nil or has no entries - nothing to merge.
         guard let entries = bundle?.entry else {
             return otherBundle
         }
         
         if otherBundle.entry == nil {
             otherBundle.entry = entries
-        } else {
-            otherBundle.entry!.append(contentsOf: entries)
+        } else if var existingEntries = otherBundle.entry {
+            existingEntries.append(contentsOf: entries)
+            otherBundle.entry = existingEntries
         }
         
         return otherBundle

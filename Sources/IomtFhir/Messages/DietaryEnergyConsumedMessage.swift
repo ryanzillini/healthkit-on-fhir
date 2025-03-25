@@ -15,7 +15,7 @@ open class DietaryEnergyConsumedMessage : IomtFhirMessageBase, HDSExternalObject
     
     public init?(object: HKObject) {
         guard let sample = object as? HKQuantitySample,
-            sample.quantityType == DietaryEnergyConsumedMessage.healthKitObjectType() else {
+            sample.quantityType == DietaryEnergyConsumedMessage.healthKitObjectType() as? HKQuantityType else {
                 return nil
         }
         
@@ -42,7 +42,7 @@ open class DietaryEnergyConsumedMessage : IomtFhirMessageBase, HDSExternalObject
     }
     
     public static func externalObject(object: HKObject, converter: HDSConverterProtocol?) -> HDSExternalObjectProtocol? {
-        return DietaryEnergyConsumedMessage.init(object: object)
+        return DietaryEnergyConsumedMessage(object: object)
     }
     
     public static func externalObject(deletedObject: HKDeletedObject, converter: HDSConverterProtocol?) -> HDSExternalObjectProtocol? {

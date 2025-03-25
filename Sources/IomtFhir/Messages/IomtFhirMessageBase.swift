@@ -36,7 +36,7 @@ open class IomtFhirMessageBase: Codable {
         self.endDate = endDate
     }
 
-    /// Generates an EventData object that facilites the transport of data to the Iomt Fhir Connector for Azure.
+    /// Generates an EventData object that facilitates the transport of data to the Iomt Fhir Connector for Azure.
     ///
     /// - Returns:  A new EventData object.
     /// - Throws: Will throw if an error occurs attempting to serialize the the object to JSON.

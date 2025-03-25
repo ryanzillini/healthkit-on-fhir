@@ -26,17 +26,17 @@ open class FhirExternalStore : HDSExternalStoreProtocol {
     
     public func fetchObjects(with objects: [HDSExternalObjectProtocol], completion: @escaping ([HDSExternalObjectProtocol]?, Error?) -> Void) {
         // Nothing to fetch - complete and return.
-        guard objects.count > 0 else {
+        guard !objects.isEmpty else {
             completion(nil, nil)
             return
         }
         
-        guard delegate != nil else {
+        guard let delegate = self.delegate else {
             search(searchObjects: objects, results: [HDSExternalObjectProtocol](), index: 0, completion: completion)
             return
         }
         
-        delegate?.shouldFetch(objects: objects, completion: { (shouldFetch, error) in
+        delegate.shouldFetch(objects: objects, completion: { (shouldFetch, error) in
             guard shouldFetch else {
                 self.delegate?.fetchComplete(objects: nil, success: error == nil, error: error)
                 completion(nil, error)
@@ -52,7 +52,7 @@ open class FhirExternalStore : HDSExternalStoreProtocol {
     
     public func add(objects: [HDSExternalObjectProtocol], completion: @escaping (Error?) -> Void) {
         // Nothing to sync - complete and return.
-        guard objects.count > 0 else {
+        guard !objects.isEmpty else {
             completion(nil)
             return
         }
@@ -65,7 +65,7 @@ open class FhirExternalStore : HDSExternalStoreProtocol {
     
     public func update(objects: [HDSExternalObjectProtocol], completion: @escaping (Error?) -> Void) {
         // Nothing to update - complete and return.
-        guard objects.count > 0 else {
+        guard !objects.isEmpty else {
             completion(nil)
             return
         }
@@ -78,7 +78,7 @@ open class FhirExternalStore : HDSExternalStoreProtocol {
     
     public func delete(deletedObjects: [HDSExternalObjectProtocol], completion: @escaping (Error?) -> Void) {
         // Nothing to delete - complete and return.
-        guard deletedObjects.count > 0 else {
+        guard !deletedObjects.isEmpty else {
             completion(nil)
             return
         }
@@ -205,21 +205,18 @@ open class FhirExternalStore : HDSExternalStoreProtocol {
     }
     
     private func shouldPerform(method: FHIRRequestMethod, resource: Resource, object: HKObject?, deletedObject: HKDeletedObject?, completion: @escaping (Bool, Error?) -> Void) {
-        guard delegate != nil else {
+        guard let delegate = self.delegate else {
             completion(true, nil)
             return
         }
         
         switch method {
         case .POST:
-            self.delegate?.shouldAdd(resource: resource, object: object, completion: completion)
-            break
+            delegate.shouldAdd(resource: resource, object: object, completion: completion)
         case .PUT:
-            self.delegate?.shouldUpdate(resource: resource, object: object, completion: completion)
-            break
+            delegate.shouldUpdate(resource: resource, object: object, completion: completion)
         case .DELETE:
-            self.delegate?.shouldDelete(resource: resource, deletedObject: deletedObject, completion: completion)
-            break
+            delegate.shouldDelete(resource: resource, deletedObject: deletedObject, completion: completion)
         default:
             completion(true, nil)
         }
